@@ -1,5 +1,16 @@
 import express from "express";
 import db from "./db/db";
+import mysql from 'mysql';
+import databaseInfo from './database';
+
+//Connect to database
+let connection = mysql.createConnection(databaseInfo);
+connection.connect(function(err) {
+  if (err) {
+    return console.error('error: ' + err.message);
+  }
+  console.log('Connected to the MySQL server.');
+});
 
 let todayDate = new Date();
 
