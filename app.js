@@ -4,6 +4,7 @@ import db from "./db/db";
 let todayDate = new Date();
 
 const app = express();
+//Get all investments based on optional date
 app.get("/carta/investments", (req, res) => {
   if (!req.query.date || new Date(req.query.date) > todayDate) {
     res.status(200).send({
@@ -21,6 +22,9 @@ app.get("/carta/investments", (req, res) => {
     });
   }
 });
+
+//Create an investment based on optional date
+// app.post()
 
 const PORT = 5000;
 
