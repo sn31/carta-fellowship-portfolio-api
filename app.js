@@ -6,13 +6,18 @@ import databaseInfo from "./database";
 //Connect to database
 let connect = mysql.createPool(databaseInfo);
 
-function getTransations() {
+function getTransations(res,date) {
   let read_R = "SELECT*FROM transactions";
   connect.getConnection(function(err, connection) {
     connection.query(read_R, function(err, data) {
       if (err) throw err;
       else {
-        console.log(data);
+        res.status(200).send({
+          success: "true",
+          message: "portfolio retrieved successfully",
+          date: date, //don't need to show this
+          portfolios: data
+        });
       }
     });
     connection.release();
@@ -38,20 +43,10 @@ const app = express();
 //Get all investments based on optional date
 app.get("/carta/investments", (req, res) => {
   if (!req.query.date || new Date(req.query.date) > todayDate) {
-    res.status(200).send({
-      success: "true",
-      message: "portfolio retrieved successfully",
-      date: todayDate, //don't need to show this
-      portfolios: db
-    });
+    getTransations(res,todayDate);
+    
   } else {
-    createTransaction("2018-11-23","Meetly",1000,1000);
-    res.status(200).send({
-      success: "true",
-      message: "portfolio retrieved successfully",
-      date: req.query.date, //don't need to show this
-      portfolios: db
-    });
+    getTransations(res,res.query.date);
   }
 });
 
