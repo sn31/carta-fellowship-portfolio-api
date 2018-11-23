@@ -4,13 +4,21 @@ import mysql from 'mysql';
 import databaseInfo from './database';
 
 //Connect to database
-let connection = mysql.createConnection(databaseInfo);
-connection.connect(function(err) {
-  if (err) {
-    return console.error('error: ' + err.message);
-  }
-  console.log('Connected to the MySQL server.');
+let connect = mysql.createPool(databaseInfo);
+
+let read_R = 'SELECT*FROM transactions';
+
+connect.getConnection(function(err,connection) {
+  connection.query(read_R, function(err,data){
+      if (err) console.log(err);
+      else {
+          console.log(data);
+      }
+  });
+  connection.release();
 });
+
+
 
 let todayDate = new Date();
 
