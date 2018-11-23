@@ -19,6 +19,19 @@ function getTransations() {
   });
 }
 
+function createTransaction(date,company,quantity,cost){
+  var insert_R = "INSERT INTO transactions(date,company,quantity,cost) VALUE(?,?,?,?)";
+  connect.getConnection(function(err,connection){
+    connection.query(insert_R,[date,company,quantity,cost], function(err,res){
+      if (err) throw err;
+      else {
+        console.log('Transaction added successfully');
+      }
+    });
+    connection.release();
+  });
+}
+
 let todayDate = new Date();
 
 const app = express();
@@ -32,7 +45,7 @@ app.get("/carta/investments", (req, res) => {
       portfolios: db
     });
   } else {
-    getTransations();
+    createTransaction("2018-11-23","Meetly",1000,1000);
     res.status(200).send({
       success: "true",
       message: "portfolio retrieved successfully",
