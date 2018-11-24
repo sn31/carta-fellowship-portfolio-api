@@ -4,7 +4,7 @@ import mysql from "mysql";
 import databaseInfo from "./database";
 import getTransations from "./services/read-mysql";
 import createTransaction from "./services/create-mysql";
-
+import updateTransaction from "./services/update-mysql";
 
 let todayDate = new Date();
 
@@ -24,6 +24,11 @@ app.post("/carta/investments",(req,res)=>{
   createTransaction(res,req.query.date,req.query.company,req.query.quantity,req.query.cost);
 })
 
+app.put("/carta/investments/:id",(req,res)=>{
+  updateTransaction(res,req.params.id,req.query.date,req.query.company,parseInt(req.query.quantity,10),parseInt(req.query.cost,10));
+})
+//Update an investment
+app.put("/carta/investments")
 const PORT = 5000;
 
 app.listen(PORT, () => {
