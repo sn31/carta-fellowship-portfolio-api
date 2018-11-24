@@ -25,7 +25,7 @@ app.post("/carta/investments",(req,res)=>{
 })
 
 app.put("/carta/investments/:id",(req,res)=>{
-  updateTransaction(res,req.params.id,req.query.date,req.query.company,parseInt(req.query.quantity,10),parseInt(req.query.cost,10));
+  updateTransaction(res,req.params.id,parseInt(req.query.quantity),parseInt(req.query.cost));
 })
 //Update an investment
 app.put("/carta/investments")

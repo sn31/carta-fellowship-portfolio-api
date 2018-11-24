@@ -3,10 +3,10 @@ import databaseInfo from '../database';
 
 let connect = mysql.createPool(databaseInfo);
 
-export default function updateTransaction(res,id,newDate,newCompany,newQuantity,newCost){
-    let update_R = "UPDATE transactions SET `date` = ?,`company` = ?,`quantity` = ?,`cost` = ? WHERE `id` = ?";
+export default function updateTransaction(res,id,newQuantity,newCost){
+    let update_R = "UPDATE transactions SET `quantity` = ?,`cost` = ? WHERE `id` = ?";
     connect.getConnection(function(err,connection){
-        connection.query(update_R,[newDate,newCompany,newQuantity,newCost,id],function(err,transaction){
+        connection.query(update_R,[newQuantity,newCost,id],function(err,transaction){
             if (err) throw err;
             else
             {
