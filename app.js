@@ -14,14 +14,14 @@ function getTransations(res,date) {
       else {
         let dataHash = {};
         data.map((transaction)=>{
-          if (!dataHash.hasOwnProperty(transaction))
+          if (!dataHash.hasOwnProperty(transaction["company"]))
           {
-            dataHash[transaction] = {"quantity":transaction["quantity"],"cost":transaction["cost"]};
+            dataHash[transaction["company"]] = {"quantity":transaction["quantity"],"cost":transaction["cost"]};
           }
           else
           {
-            dataHash[transaction]["quantity"] += transaction["quantity"];
-            dataHash[transaction]["cost"] += transaction["cost"]; 
+            dataHash[transaction["company"]]["quantity"] += transaction["quantity"];
+            dataHash[transaction["company"]]["cost"] += transaction["cost"]; 
           }
         });
 
