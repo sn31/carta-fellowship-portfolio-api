@@ -7,7 +7,7 @@ import databaseInfo from "./database";
 let connect = mysql.createPool(databaseInfo);
 
 function getTransations(res,date) {
-  let read_R = "SELECT*FROM transactions";
+  let read_R = `SELECT*FROM transactions WHERE date <= '${date}'`;
   connect.getConnection(function(err, connection) {
     connection.query(read_R, function(err, data) {
       if (err) throw err;
@@ -15,7 +15,6 @@ function getTransations(res,date) {
         res.status(200).send({
           success: "true",
           message: "portfolio retrieved successfully",
-          date: date, //don't need to show this
           portfolios: data
         });
       }
@@ -43,10 +42,11 @@ const app = express();
 //Get all investments based on optional date
 app.get("/carta/investments", (req, res) => {
   if (!req.query.date || new Date(req.query.date) > todayDate) {
+    console.log(todayDate);
     getTransations(res,todayDate);
     
   } else {
-    getTransations(res,res.query.date);
+    getTransations(res,req.query.date);
   }
 });
 
