@@ -12,10 +12,23 @@ function getTransations(res,date) {
     connection.query(read_R, function(err, data) {
       if (err) throw err;
       else {
+        let dataHash = {};
+        data.map((transaction)=>{
+          if (!dataHash.hasOwnProperty(transaction))
+          {
+            dataHash[transaction] = {"quantity":transaction["quantity"],"cost":transaction["cost"]};
+          }
+          else
+          {
+            dataHash[transaction]["quantity"] += transaction["quantity"];
+            dataHash[transaction]["cost"] += transaction["cost"]; 
+          }
+        });
+
         res.status(200).send({
           success: "true",
           message: "portfolio retrieved successfully",
-          portfolios: data
+          portfolios: dataHash
         });
       }
     });
