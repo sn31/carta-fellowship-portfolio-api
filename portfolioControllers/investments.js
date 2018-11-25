@@ -1,6 +1,6 @@
 /*eslint-disable class-methods-use-this*/
-
-import getTransations from "../services/read-mysql";
+import { getAllTransactions } from "../services/read-mysql";
+import { getTransactions } from "../services/read-mysql";
 import createTransaction from "../services/create-mysql";
 import updateTransaction from "../services/update-mysql";
 
@@ -8,12 +8,18 @@ let todayDate = new Date();
 class InvestmentsController {
   getAllInvestments(req, res) {
     if (!req.query.date || new Date(req.query.date) > todayDate) {
-      getTransations(res, todayDate,req.query.update_date);
+      getTransactions(res, todayDate, req.query.update_date);
     } else {
-      getTransations(res, req.query.date,req.query.update_date);
+      getTransactions(res, req.query.date, req.query.update_date);
     }
   }
-
+  getAllTransactions(req, res) {
+    if (!req.query.date || new Date(req.query.date) > todayDate) {
+      getAllTransactions(res, todayDate);
+    } else {
+      getAllTransactions(res, req.query.date);
+    }
+  }
   createInvestment(req, res) {
     createTransaction(
       res,
