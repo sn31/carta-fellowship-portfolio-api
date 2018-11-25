@@ -9,6 +9,7 @@ export default function getTransations(res, date, update_date) {
   connect.getConnection(function(err, connection) {
     let updateHash = {};
     connection.query(get_updates, function(err, data) {
+      console.log(data);
       data.map(update => {
         updateHash[update["transaction_id"]] = {
           id: update["id"],
@@ -17,38 +18,32 @@ export default function getTransations(res, date, update_date) {
         };
       });
     });
-    
+
     connection.query(read_R, function(err, data) {
       if (err) throw err;
       else {
         let dataHash = {};
+        console.log(updateHash);
         data.map(transaction => {
-          console.log(updateHash)
-          for (var update in updateHash){
-            if (update !== transaction["id"]) {
-              if (!dataHash.hasOwnProperty(transaction["company"])) {
-                dataHash[transaction["company"]] = {
-                  quantity: transaction["quantity"],
-                  cost: transaction["cost"]
-                };
-              } else {
+          for (var update in updateHash) {
+            if (!dataHash.hasOwnProperty(transaction["company"])) {
+              dataHash[transaction["company"]] = {
+                quantity: updateHash[update]["new_quantity"],
+                cost: updateHash[update]["new_cost"]
+              };
+            } else {
+              if (update !== transaction["id"]) {
                 dataHash[transaction["company"]]["quantity"] +=
                   transaction["quantity"];
                 dataHash[transaction["company"]]["cost"] += transaction["cost"];
-              }
-            } else {
-              if (!dataHash.hasOwnProperty(transaction["company"])) {
-                dataHash[transaction["company"]] = {
-                  quantity: updateHash[update]["new_quantity"],
-                  cost: updateHash[update]["new_cost"]
-                };
               } else {
                 dataHash[transaction["company"]]["quantity"] +=
-                updateHash[update]["new_quantity"];
-                dataHash[transaction["company"]]["cost"] += updateHash[update]["new_cost"];
+                  updateHash[update]["new_quantity"];
+                dataHash[transaction["company"]]["cost"] +=
+                  updateHash[update]["new_cost"];
               }
             }
-          };
+          }
         });
 
         res.status(200).send({
