@@ -8,9 +8,9 @@ let todayDate = new Date();
 class InvestmentsController {
   getAllInvestments(req, res) {
     if (!req.query.date || new Date(req.query.date) > todayDate) {
-      getTransations(res, todayDate);
+      getTransations(res, todayDate,req.query.update_date);
     } else {
-      getTransations(res, req.query.date);
+      getTransations(res, req.query.date,req.query.update_date);
     }
   }
 
