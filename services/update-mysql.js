@@ -8,7 +8,13 @@ export default function updateTransaction(res,id,newQuantity,newCost){
     let update_R = "INSERT INTO updates(transaction_id,update_date,new_quantity,new_cost) VALUE(?,?,?,?)";
     connect.getConnection(function(err,connection){
         connection.query(update_R,[id,updateDate,newQuantity,newCost],function(err,transaction){
-            if (err) throw err;
+            if (err)
+            {
+                return res.status(400).send({
+                    success:"false",
+                    message:"Please specify both quantity and cost",
+                });
+            } 
             else
             {
                 return res.status(200).send({
