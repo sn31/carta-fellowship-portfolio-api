@@ -6,13 +6,14 @@ let connect = mysql.createPool(databaseInfo);
 export default function getTransations(res, date, update_date) {
   let get_updates = `SELECT * FROM updates WHERE update_date <= '${update_date}'`;
   let read_R = `SELECT*FROM transactions WHERE date <= '${date}'`;
+
   connect.getConnection(function(err, connection) {
     let updateHash = {};
-    connection.query(get_updates, function(err, data) {
-      console.log(data);
-      data.map(update => {
+    connection.query(get_updates, function(err, dataU) {
+      dataU.map(update => {
         updateHash[update["transaction_id"]] = {
           id: update["id"],
+          company: update["company"],
           new_quantity: update["new_quantity"],
           new_cost: update["new_cost"]
         };
@@ -23,25 +24,32 @@ export default function getTransations(res, date, update_date) {
       if (err) throw err;
       else {
         let dataHash = {};
-        console.log(updateHash);
         data.map(transaction => {
-          for (var update in updateHash) {
-            if (!dataHash.hasOwnProperty(transaction["company"])) {
+          if (!dataHash.hasOwnProperty(transaction["company"])) {
+            if (updateHash.hasOwnProperty(transaction["id"]) === true) {
+            dataHash[transaction["company"]] = {
+              quantity: updateHash[transaction["id"]]["new_quantity"],
+              cost: updateHash[transaction["id"]]["new_cost"]
+            };
+          }
+            else 
+            {
               dataHash[transaction["company"]] = {
-                quantity: updateHash[update]["new_quantity"],
-                cost: updateHash[update]["new_cost"]
-              };
+                quantity: transaction["quantity"],
+                cost:transaction["cost"]
+              }; 
+            }
+          } else {
+            if (updateHash.hasOwnProperty(transaction["id"]) === true) { 
+              dataHash[transaction["company"]]["quantity"] +=
+                updateHash[transaction["id"]]["new_quantity"];
+              dataHash[transaction["company"]]["cost"] +=
+                updateHash[transaction["id"]]["new_cost"];
             } else {
-              if (update !== transaction["id"]) {
-                dataHash[transaction["company"]]["quantity"] +=
-                  transaction["quantity"];
-                dataHash[transaction["company"]]["cost"] += transaction["cost"];
-              } else {
-                dataHash[transaction["company"]]["quantity"] +=
-                  updateHash[update]["new_quantity"];
-                dataHash[transaction["company"]]["cost"] +=
-                  updateHash[update]["new_cost"];
-              }
+              
+              dataHash[transaction["company"]]["quantity"] +=
+                transaction["quantity"];
+              dataHash[transaction["company"]]["cost"] += transaction["cost"];
             }
           }
         });

@@ -28,6 +28,7 @@ class InvestmentsController {
     updateTransaction(
       res,
       req.params.id,
+      req.query.company,
       parseInt(req.query.quantity),
       parseInt(req.query.cost)
     );
