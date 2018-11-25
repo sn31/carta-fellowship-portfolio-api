@@ -13,7 +13,6 @@ export default function getTransations(res, date, update_date) {
       dataU.map(update => {
         updateHash[update["transaction_id"]] = {
           id: update["id"],
-          company: update["company"],
           new_quantity: update["new_quantity"],
           new_cost: update["new_cost"]
         };
