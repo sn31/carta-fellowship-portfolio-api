@@ -43,33 +43,39 @@ Sometimes users input data incorrectly, or forget to input data in the system wh
 ## Documentation
 
 **GET getAllTransactions**
+
 Get all transactions up until a date, providing information such as transaction id that can be used to update a transaction.
 ```
 http://localhost:5000/carta/investments/transactions
 ```
 
 **GET getInvestmentsWithoutDate**
+
 If no date is given, today's date will be used.
 ```
 http://localhost:5000/carta/investments
 ```
 
 **GET getInvestmentWithDate**
+
 Get all investments up until a certain date.
 ```
 http://localhost:5000/carta/investments?date=2018-09-22
 ```
 **GET getInvestments2DDate**
+
 Support querying the state of investments on both date dimensions at once.
 ```
 http://localhost:5000/carta/investments?date=2018-11-01&update_date=2018-11-20
 ```
 **POST createInvestment**
+
 Create a new investment by specifying the company, date, quantity and cost.
 ```
 http://localhost:5000/carta/investments?date=2018-03-31&company=Test&quantity=200&cost=200
 ```
 **PUT updateInvestment**
+
 Find an investment in the past using the transaction id and update the quantity and/or the cost.
 ```
 http://localhost:5000/carta/investments/7?quantity=1999&cost=10000
