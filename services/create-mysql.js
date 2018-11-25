@@ -11,8 +11,13 @@ export default function createTransaction(res, date, company, quantity, cost) {
       err,
       investment
     ) {
-      if (err) throw err;
-      else {
+      if (err) {
+        return res.status(400).send({
+          success: "false",
+          message: "Please specify company, quantity and cost",
+          err
+        });
+      } else {
         return res.status(201).send({
           success: "true",
           message: "Transaction added successfully",

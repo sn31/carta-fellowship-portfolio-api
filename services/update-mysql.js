@@ -13,6 +13,7 @@ export default function updateTransaction(res,id,newQuantity,newCost){
                 return res.status(400).send({
                     success:"false",
                     message:"Please specify both quantity and cost",
+                    err
                 });
             } 
             else
