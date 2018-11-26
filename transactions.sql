@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Nov 25, 2018 at 12:07 AM
+-- Generation Time: Nov 26, 2018 at 01:37 AM
 -- Server version: 5.7.21
 -- PHP Version: 7.2.7
 
@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `carta-api`
 --
-CREATE DATABASE IF NOT EXISTS `carta-api` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `carta-api`;
 
 -- --------------------------------------------------------
 
@@ -28,8 +26,9 @@ USE `carta-api`;
 -- Table structure for table `transactions`
 --
 
+DROP TABLE IF EXISTS `transactions`;
 CREATE TABLE `transactions` (
-  `id` int(32) NOT NULL,
+  `id` int(31) NOT NULL,
   `date` date NOT NULL,
   `company` varchar(255) NOT NULL,
   `quantity` int(32) NOT NULL,
@@ -46,8 +45,10 @@ INSERT INTO `transactions` (`id`, `date`, `company`, `quantity`, `cost`) VALUES
 (4, '2018-11-01', 'Meetly', 100, 200),
 (6, '2018-08-01', 'IMIM', 100, 300),
 (7, '2018-11-15', 'IMIM', 200, 500),
-(10, '2018-02-27', 'skye', 101, 203),
-(11, '2018-10-25', 'AMZ', 301, 601);
+(10, '2018-02-27', 'skye', 104, 304),
+(11, '2018-10-25', 'AMZ', 301, 601),
+(12, '2018-03-31', 'Test', 200, 200),
+(13, '2018-03-31', 'Test', 200, 200);
 
 --
 -- Indexes for dumped tables
@@ -67,7 +68,7 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(31) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
